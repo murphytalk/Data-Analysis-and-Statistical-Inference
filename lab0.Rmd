@@ -5,6 +5,8 @@ date: "2015-09-21"
 output: html_document
 ---
 
+## The Dataframe
+
 Read in your data set and assign to the object:
 
 ```{r}
@@ -37,4 +39,49 @@ num_boys
 num_girls
 ```
 
-The result is in data type *vector*.
+The result is in data type **vector**.
+
+## Arithmetic calculation on dataframe and plottting
+
+Plot the data:
+
+```{r}
+plot(x=present$year,y=present$girls,xlab = "Year" ,ylab = "Girls Born")
+```
+
+Line plot:
+
+```{r}
+plot(x=present$year,y=present$girls,xlab = "Year" ,ylab = "Girls Born", type = "l")
+```
+
+Plotting the total number of new born babies by year:
+```{r}
+babies <- present$boys + present$girls
+plot(x=present$year,y=present$girls,xlab = "Year" ,ylab = "Babies Born", type = "l")
+```
+
+Compute the ratio of the number of boys divided by the number of girls born:
+```{r}
+present$boys/present$girls
+```
+
+Calculate the proportion of male newborns for all years and plot it:
+```{r}
+plot(x=present$year,y=present$boys/(present$boys + present$girls),xlab = "Year" ,ylab = "Boys Born", type = "l")
+```
+
+In addition to simple mathematical operators like subtraction and division, you can ask R to make comparisons: greater than with `>`, less than with `<`, and equality with `==`. We can ask if boys outnumber girls in each year:
+```{r}
+present$boys > present$girls
+```
+
+Plotting boys-to-girls ration for every year:
+```{r}
+plot(x=present$year,y=present$boys/present$girls,xlab = "Year" ,ylab = "Boys vs girls ration", type = "l")
+```
+
+Plotting absolute differences between number of boys and girls born in each year:
+```{r}
+plot(x=present$year,y=abs(present$boys-present$girls),xlab = "Year" ,ylab = "Boys/girls diff", type = "l")
+```
