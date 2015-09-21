@@ -1,0 +1,40 @@
+---
+title: "Lab 0"
+author: "Mu Lu"
+date: "2015-09-21"
+output: html_document
+---
+
+Read in your data set and assign to the object:
+
+```{r}
+present <- read.table("http://assets.datacamp.com/course/dasi/present.txt")
+```
+
+`present` will print your data set in the console:
+
+```{r, echo=FALSE}
+present
+```
+
+Print the number of rows and variables:
+```{r}
+dim(present)
+```
+
+Print the names of the variables of the data frame:
+```{r}
+names(present)
+```
+
+We can tell there are 3 vaibales (year,boys,girls) in the present data set.
+
+Find the number of boys and girls born each year, and assign answers to variables:
+```{r}
+num_boys <-present$boys
+num_girls <- present$girls
+num_boys
+num_girls
+```
+
+The result is in data type *vector*.
