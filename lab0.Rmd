@@ -2,7 +2,7 @@
 title: "Lab 0"
 author: "Mu Lu"
 date: '2015-09-21'
-output: pdf_document
+output: html_document
 ---
 
 ## The Dataframe

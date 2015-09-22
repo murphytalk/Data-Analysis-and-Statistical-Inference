@@ -1,0 +1,154 @@
+---
+title: "Lab 1"
+author: "Mu Lu"
+date: '2015-09-21'
+output: html_document
+---
+## The Data
+
+Load `.Rdata` file, a dataframe `cdc` will be loaded:
+```{r}
+load(url("http://assets.datacamp.com/course/dasi/cdc.Rdata"))
+```
+
+Take a look at the names of variables:
+```{r}
+names(cdc)
+```
+
+Have a look at the first or last few entries(rows):
+```{r}
+head(cdc)
+tail(cdc)
+```
+
+Use `dim` we can tell there are 20,000 cases and 9 variables in the data.
+```{r}
+dim(cdc)
+```
+
+`genhlth` is ordinal categorical variable; `weight` is continuous numberical variale; `smoke100` is not ordinal categorical variable.
+
+## Numerical data
+
+Use functions `mean`, `var` and `median` to calculate the  mean, variance and median of certain variables of your data frame.
+
+```{r}
+mean(cdc$weight)
+var(cdc$weight)
+median(cdc$weight)
+```
+The function `summary()` returns a numerical summary: minimum, first quartile, median, mean, third quartile, and maximum.
+```{r}
+summary(cdc$weight)
+```
+
+## Categorical data
+
+The function `table()` counts the number of times each kind of category occurs in a variable. Create the frequency table for `genhlth`:
+
+```{r}
+tab<-table(cdc$genhlth)
+tab
+```
+
+Create the relative frequency table:
+```{r}
+tab/sum(tab)
+```
+
+### Bar plot
+
+Plotting categorical data of `smoke100`:
+```{r}
+barplot(table(cdc$smoke100))
+```
+
+### Mosaic plot
+
+The `table` command can be used to tabulate any number of variables that you provide. This means you can investigate how different categories relate to each other. For example, you can see how many people have smoked at least 100 cigarettes in the different general health groups by executing :
+```{r}
+hlth_somkers <- table(cdc$genhlth, cdc$smoke100)
+hlth_somkers
+```
+
+Plotting it:
+```{r}
+mosaicplot(hlth_somkers,color=2:3,shade = FALSE)
+```
+
+## Interlude: How R thinks about data
+
+Data in a dataframe can be indexed by row(each row is a different observation) and column (each column is a different variable), index starts from 1. e.g. the height of the 1337th respondent is (use `names` we can see `height` is the 5th variable):
+```{r}
+cdc[1337,5]
+```
+
+You can also subset using an index range, e.g., to see the weights for the first 10 respondents you can type 
+```{r}
+cdc[1:10, 6]
+```
+
+To see all variables for specified rows(observations). e.g. All variables for the first 10 respondents:
+```{r}
+cdc[1:10,]
+```
+This annotation also works for row, e.g. the first variable of all respondents: `cdc[,1]`. You can also use variable name here, e.g. weight of the 567th respondent :
+```{r}
+cdc$weight[567]
+```
+
+It's often useful to extract all individuals (cases) in a data frame that have specific characteristics. You can accomplish this through conditioning commands.
+
+First, consider expressions like `cdc$gender == "m"` or `cdc$age > 30`. These commands produce a series of `TRUE` and `FALSE` values. There is one value for each respondent, where `TRUE` indicates that the person was male or older than 30, respectively.
+
+Suppose now you want to extract just the data for the men in the sample, or just for those over 30. You can simply use `subset` to do that. For example, the command
+```{r}
+s <- subset(cdc, cdc$gender == "m")
+dim(s)
+head(s)
+tail(s)
+```
+will return a data frame that only contains the men from the cdc data frame. (Note the double equal sign!)
+
+What makes conditioning commands really powerful is the fact that you can use several of these conditions together with the logical operators `&` and `|`.
+
+The `&` is read “and” so that `subset(cdc, cdc$gender == "f" & cdc$age > 30)` will give you the data for women over the age of 30.
+
+The `|` character is read “or” so that `subset(cdc, cdc$gender == "f" | cdc$age > 30)` will take people who are women or over the age of 30.
+
+In principle, you may use as many “and” and “or” clauses as you like when forming a subset.
+
+
+## Plotting numerical data
+
+Draw the box plot of the respondents heights:
+
+```{r}
+boxplot(cdc$height)
+summary(cdc$height)
+```
+
+We use operator `~` (reads "versus" or "as a function of") to compare across several categories. e.g. box plot the weight of respondents as a function of whether or not they smoke.
+```{r}
+boxplot(cdc$weight~cdc$smoke100)
+```
+
+We can also do some calculations. e.g. box plot the BMI versus the general health:
+```{r}
+bmi <- cdc$weight*703/cdc$height^2
+boxplot(bmi~cdc$genhlth)
+```
+
+Use `breaks` parameter to set the number of bins.
+```{r}
+hist(cdc$weight)
+hist(cdc$weight,breaks=50)
+```
+
+If we plot the relationship between weight and desired weight:
+```{r}
+plot(x=cdc$weight,y=cdc$wtdesire)
+```
+
+We can see moderately strong positive linear association.
